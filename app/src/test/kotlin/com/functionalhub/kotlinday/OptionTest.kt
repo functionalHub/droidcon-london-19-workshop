@@ -11,17 +11,21 @@ class OptionTest {
         val view = BadgeView()
         val user = User(Badge.toOption())
 
-        view.background = `???`
+        view.background = user.badge.fold({
+            Drawable.InactiveBadgeDrawable
+        }, {
+            Drawable.ActiveBadgeDrawable
+        })
 
-        view.background shouldBe `???`
+        view.background shouldBe Drawable.ActiveBadgeDrawable
     }
 
     @Test
     fun `fallback Option`() {
         val user = User(None)
-        val message = user.badge.getOrElse { "inactive" }
+        val message = user.badge.map { it.name }.getOrElse { "inactive" }
 
-        message shouldBe `???`
+        message shouldBe "inactive"
     }
 
     @Test
@@ -29,7 +33,7 @@ class OptionTest {
         val list: List<String> = emptyList()
         val first = list.firstOrNone()
 
-        first shouldBe `???`
+        first shouldBe None
     }
 
 }

@@ -2,6 +2,7 @@ package com.functionalhub.kotlinday
 
 import arrow.core.*
 import arrow.core.extensions.either.applicative.applicative
+import arrow.core.extensions.list.monadFilter.filterMap
 import arrow.core.extensions.list.traverse.sequence
 import arrow.core.extensions.list.traverse.traverse
 import arrow.core.extensions.option.applicative.applicative
@@ -14,7 +15,7 @@ class ListKTest {
     fun `mapFilter with other data types`() {
         val numbers = listOf(1, 2, 3, 4, 5, 6, 7, 8)
 
-        val evenNumbers = `???`
+        val evenNumbers = numbers.filterMap(isEven)
 
         evenNumbers shouldBe listOf(2, 4, 6, 8)
     }
@@ -27,7 +28,7 @@ class ListKTest {
             item.toOption().mapNotNull { it.toIntOrNull() }
         }
 
-        result shouldBe `???`
+        result shouldBe None
 
     }
 
@@ -38,7 +39,7 @@ class ListKTest {
 
         val result = list.sequence(Either.applicative())
 
-        result shouldBe `???`
+        result shouldBe Left("a")
     }
 
 }
