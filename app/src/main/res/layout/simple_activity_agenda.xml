@@ -5,6 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
+    <FrameLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_weight="1">
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
 
     <TextView
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
