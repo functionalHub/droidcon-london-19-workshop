@@ -1,6 +1,7 @@
 package com.functionalhub.kotlinday
 
 import arrow.core.*
+import arrow.core.extensions.fx
 import io.kotlintest.shouldBe
 import org.junit.Test
 import java.util.*
@@ -9,9 +10,11 @@ class FxTest {
 
     @Test
     fun `Option fx`() {
-        val result =
-            conference.flatMap { it.venue }
-                .flatMap { it.city }
+        val result = Option.fx {
+            val conference = conference.bind()
+            val venue = conference.venue.bind()
+            venue.city.bind()
+        }
 
         result shouldBe None
     }
@@ -19,10 +22,10 @@ class FxTest {
 
     @Test
     fun `Either fx`() {
-        val result = Conference.fetchDate()
-            .flatMap { date ->
-                Venue.fetchAvailability(date)
-            }
+        val result: Either<ConferenceError, VenueAvailability> = Either.fx {
+            val date = Conference.fetchDate().bind()
+            Venue.fetchAvailability(date).bind()
+        }
 
         result shouldBe ConferenceError.VenueNotAvailable.left()
     }
