@@ -7,10 +7,11 @@
 
 
     <TextView
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:id="@+id/result"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center"
+        android:gravity="center"
         tools:text="result"
         android:layout_weight="1" />
 
