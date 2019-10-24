@@ -2,11 +2,14 @@ package com.functionalhub.kotlinday
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import arrow.core.Either
 import arrow.fx.IO
 import arrow.fx.extensions.fx
 import kotlinx.android.synthetic.main.simple_activity_agenda.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 
 class AgendaActivity : AppCompatActivity(R.layout.simple_activity_agenda) {
 
@@ -19,15 +22,52 @@ class AgendaActivity : AppCompatActivity(R.layout.simple_activity_agenda) {
 
     private fun setupUI() {
         buttonOne.setOnClickListener {
-            IO.effect { updateMessage("One") }.unsafeRunAsync { it.reportError() }
+            IO.fx {
+                effect { setLoading(true) }.bind()
+                val message = Repository.loadOne().bind()
+                continueOn(Dispatchers.Main)
+                effect { setLoading(false) }.bind()
+                effect { updateMessage(message) }.bind()
+            }.unsafeRunAsync { it.reportError() }
         }
         buttonTwo.setOnClickListener {
-            IO.effect { updateMessage("Two") }.unsafeRunAsync { it.reportError() }
+            IO.fx {
+                effect { setLoading(true) }.bind()
+                val message = Repository.loadTwo().bind()
+                continueOn(Dispatchers.Main)
+                effect { setLoading(false) }.bind()
+                effect { updateMessage(message) }.bind()
+            }.unsafeRunAsync { it.reportError() }
         }
     }
 
     private fun updateMessage(message: String) {
         result.text = message
+    }
+
+    private fun setLoading(loading: Boolean) {
+        if (loading) {
+            loadingView.visibility = View.VISIBLE
+            result.visibility = View.GONE
+        } else {
+            loadingView.visibility = View.GONE
+            result.visibility = View.VISIBLE
+        }
+    }
+
+}
+
+object Repository {
+
+    fun loadOne(): IO<String> = IO {
+        delay(2_000)
+        "one"
+    }
+
+
+    fun loadTwo(): IO<String> = IO {
+        delay(2_000)
+        "two"
     }
 
 }
