@@ -1,7 +1,9 @@
 package com.functionalhub.kotlinday
 
 import arrow.fx.IO
+import arrow.fx.extensions.fx
 import io.kotlintest.shouldBe
+import kotlinx.coroutines.Dispatchers
 import org.junit.Test
 
 class SideEffectsTest {
@@ -9,6 +11,12 @@ class SideEffectsTest {
     @Test
     fun `side effects on view`() {
         val view = Database()
+
+        IO.fx {
+            val data = loadState().bind()
+            continueOn(Dispatchers.IO)
+            effect { view.data = data }.bind()
+        }.unsafeRunSync()
 
         view.data shouldBe "success"
     }
