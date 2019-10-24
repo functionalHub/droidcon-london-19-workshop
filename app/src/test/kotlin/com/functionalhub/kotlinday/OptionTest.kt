@@ -19,7 +19,7 @@ class OptionTest {
     @Test
     fun `fallback Option`() {
         val user = User(None)
-        val message = user.badge.getOrElse { "inactive" }
+        val message = user.badge.map { it.name }.getOrElse { "inactive" }
 
         message shouldBe `???`
     }
