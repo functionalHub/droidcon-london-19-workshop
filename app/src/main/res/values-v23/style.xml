@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BaseAppThemeV23" parent="BaseAppTheme">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="AppTheme" parent="BaseAppThemeV23">
+        <!-- overrides base AppTheme -->
+    </style>
+
+
+</resources>
