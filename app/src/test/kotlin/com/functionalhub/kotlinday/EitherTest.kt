@@ -1,7 +1,7 @@
 package com.functionalhub.kotlinday
 
 import arrow.core.Either
-import arrow.core.Left
+import arrow.core.flatMap
 import io.kotlintest.shouldBe
 import org.junit.Test
 
@@ -9,21 +9,27 @@ class EitherTest {
 
     @Test
     fun `network error`() {
-        val result: Either<Failure, Success> = `???`
+        val result: Either<Failure, Success> =
+            failureRequest()
+                .flatMap { response -> parseRequest(response) }
 
         result shouldBe Either.Left(Failure.Network)
     }
 
     @Test
     fun `parse error`() {
-        val result: Either<Failure, Success> = `???`
+        val result: Either<Failure, Success> =
+            successRequest("invalid")
+                .flatMap { response -> parseRequest(response) }
 
         result shouldBe Either.Left(Failure.Parse)
     }
 
     @Test
     fun `success result`() {
-        val result: Either<Failure, Success> = `???`
+        val result: Either<Failure, Success> =
+            successRequest()
+                .flatMap { response -> parseRequest(response) }
 
         result shouldBe Either.Right(Success)
     }
@@ -31,7 +37,7 @@ class EitherTest {
 }
 
 private fun successRequest(body: String = "valid"): Either<Failure, Response> =
-    Either.right(Response("valid")) // mention alternative
+    Either.right(Response(body)) // mention alternative
 
 private fun failureRequest(): Either<Failure, Response> =
     Either.left(Failure.Network)
@@ -42,8 +48,8 @@ private fun parseRequest(response: Response): Either<Failure, Success> =
 private class Response(val body: String)
 
 private sealed class Failure {
-    object Network: Failure()
-    object Parse: Failure()
+    object Network : Failure()
+    object Parse : Failure()
 }
 
 object Success
