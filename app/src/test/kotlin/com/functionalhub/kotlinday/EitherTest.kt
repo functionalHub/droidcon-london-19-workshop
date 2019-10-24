@@ -31,7 +31,7 @@ class EitherTest {
 }
 
 private fun successRequest(body: String = "valid"): Either<Failure, Response> =
-    Either.right(Response("valid")) // mention alternative
+    Either.right(Response(body)) // mention alternative
 
 private fun failureRequest(): Either<Failure, Response> =
     Either.left(Failure.Network)
