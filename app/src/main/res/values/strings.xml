@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Kotlin Day</string>
     <string name="cd_avatar">avatar</string>
+    <string name="two">Two</string>
+    <string name="one">One</string>
 </resources>
